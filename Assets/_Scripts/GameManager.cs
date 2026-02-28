@@ -12,10 +12,13 @@ public class GameManager : MonoBehaviour
     public TMP_Text playerScore;
     //public TMP_Text playerHighScore;
 
-    public int gameOverPageIndex = 0;
+    
     public GameObject gameOverScreen;
+    public TMP_Text finalScoreText;
 
     private int gameManagerPlayerScore = 0;
+
+    private Vector2 playerStartPos;
 
     public static int playerScoreValue
     {
@@ -44,7 +47,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerStartPos = player.transform.position;
     }
 
     // Update is called once per frame
@@ -67,6 +70,20 @@ public class GameManager : MonoBehaviour
     {        
         Debug.Log("Game Over!");
         Time.timeScale = 0f; 
-        Instantiate(gameOverScreen, Vector3.zero, Quaternion.identity);
+        finalScoreText.text = "Score: " + playerScoreValue.ToString();
+        gameOverScreen.SetActive(true);
+    }
+
+    public void DestroyAllPipes() 
+    { 
+        GameObject[] pipes = GameObject.FindGameObjectsWithTag("Pipe");
+        foreach (GameObject pipe in pipes)
+        {
+            Destroy(pipe);
+        }
+    }
+    public void ResetPlayerAndScore() { 
+        player.transform.position = playerStartPos;
+        playerScoreValue = 0;
     }
 }
